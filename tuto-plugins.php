@@ -16,14 +16,28 @@
 class TutoPlugin
 {
 
+   public $plugin_name;
+
    function __construct()
    {
       add_action("init", array($this, "costum_post_type"));
+      $this->plugin_name
+         = plugin_basename(__FILE__);
    }
    function register()
    {
       add_action("admin_enqueue_script", array($this, "enqueue"));
       add_action("admin_menu", array($this, "add_admin_menu"));
+
+      add_filter("plugin_action_links_" . $this->plugin_name, array($this, "settings_links"));
+   }
+
+   function settings_links($links)
+   {
+      $link = '<a href="admin.php?page=ganius_plugin">Settings</a>';
+      //add links
+      array_push($links, $link);
+      return $links;
    }
 
    function add_admin_menu()
